@@ -1,5 +1,6 @@
 package com.example.tipcalculatorapp;
 
+import android.R.bool;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,11 +25,13 @@ public class TipCalculatorActivity extends Activity {
 	private float tip;
 	private float totalBill;
 	private float calculatedTip;
+	private boolean clearCustomTip;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tip_calculator);
+		
 		etTotalBill = (EditText)findViewById(R.id.etBill);
 		btnTip10 = (Button)findViewById(R.id.btn10);
 		btnTip20 = (Button)findViewById(R.id.btn20);
@@ -46,11 +49,8 @@ public class TipCalculatorActivity extends Activity {
 					Toast.makeText(getBaseContext(), "Please enter the tip value / total bill", Toast.LENGTH_SHORT).show();
 				} else {
 					tip = Float.parseFloat(etCustomTip.getText().toString());
-					tvCalcluatedTip.setText("");
-					tvCalculatedTotal.setText("");
-					calculatedTip = (Float.parseFloat(etTotalBill.getText().toString())* tip)/100;
-					tvCalcluatedTip.setText(Float.toString(calculatedTip));
-					tvCalculatedTotal.setText(Float.toString(Float.parseFloat(etTotalBill.getText().toString()) + calculatedTip));
+					clearCustomTip = false;
+					calculateTip(tip, clearCustomTip);
 				}
 			}
 		});
@@ -63,12 +63,8 @@ public class TipCalculatorActivity extends Activity {
 					Toast.makeText(getBaseContext(), "Please enter the total bill", Toast.LENGTH_SHORT).show();
 				} else {
 					tip = 10;
-					tvCalcluatedTip.setText("");
-					tvCalculatedTotal.setText("");
-					etCustomTip.setText("");
-					calculatedTip = (Float.parseFloat(etTotalBill.getText().toString())* tip)/100;
-					tvCalcluatedTip.setText(Float.toString(calculatedTip));
-					tvCalculatedTotal.setText(Float.toString(Float.parseFloat(etTotalBill.getText().toString()) + calculatedTip));
+					clearCustomTip = true;
+					calculateTip(tip, clearCustomTip);
 				}
 			}
 		});
@@ -80,12 +76,8 @@ public class TipCalculatorActivity extends Activity {
 					Toast.makeText(getBaseContext(), "Please enter the total bill", Toast.LENGTH_SHORT).show();
 				} else {
 					tip = 20;
-					tvCalcluatedTip.setText("");
-					tvCalculatedTotal.setText("");
-					etCustomTip.setText("");
-					calculatedTip = (Float.parseFloat(etTotalBill.getText().toString())* tip)/100;
-					tvCalcluatedTip.setText(Float.toString(calculatedTip));
-					tvCalculatedTotal.setText(Float.toString(Float.parseFloat(etTotalBill.getText().toString()) + calculatedTip));
+					clearCustomTip = true;
+					calculateTip(tip, clearCustomTip);
 				}		
 			}
 		});
@@ -97,18 +89,26 @@ public class TipCalculatorActivity extends Activity {
 					Toast.makeText(getBaseContext(), "Please enter the total bill", Toast.LENGTH_SHORT).show();
 				} else {
 					tip = 30;
-					tvCalcluatedTip.setText("");
-					tvCalculatedTotal.setText("");
-					etCustomTip.setText("");
-					calculatedTip = (Float.parseFloat(etTotalBill.getText().toString())* tip)/100;
-					tvCalcluatedTip.setText(Float.toString(calculatedTip));
-					tvCalculatedTotal.setText(Float.toString(Float.parseFloat(etTotalBill.getText().toString()) + calculatedTip));
+					clearCustomTip = true;
+					calculateTip(tip, clearCustomTip);
 				}	
 			}
 		});
 	}
 
 
+	private void calculateTip(float tipSelected, boolean clearCustomTip){
+		tip = tipSelected;
+		tvCalcluatedTip.setText("");
+		tvCalculatedTotal.setText("");
+		if(clearCustomTip){
+			etCustomTip.setText("");
+		}
+		calculatedTip = (Float.parseFloat(etTotalBill.getText().toString())* tip)/100;
+		tvCalcluatedTip.setText(Float.toString(calculatedTip));
+		tvCalculatedTotal.setText(Float.toString(Float.parseFloat(etTotalBill.getText().toString()) + calculatedTip));
+	}
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
